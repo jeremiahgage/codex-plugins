@@ -1,9 +1,9 @@
 ---
-name: dev
-description: Use only when the user explicitly invokes `$dev` or directly asks for a generic development orchestrator that ingests an implementation plan, chooses serial subagent phases, spawns fresh-context worker subagents one at a time, summarizes each phase's changes, and verifies the completed work end to end.
+name: ultradev
+description: Use only when the user explicitly invokes `$ultradev` or directly asks for a generic development orchestrator that ingests an implementation plan, chooses serial subagent phases, spawns fresh-context worker subagents one at a time, summarizes each phase's changes, and verifies the completed work end to end.
 ---
 
-# Dev
+# Ultradev
 
 Use this skill to implement an existing plan through staged subagent work while retaining orchestrator ownership of integration and verification.
 

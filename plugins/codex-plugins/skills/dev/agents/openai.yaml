@@ -1,7 +1,0 @@
-interface:
-  display_name: "Dev"
-  short_description: "Implement plans with staged agents"
-  default_prompt: "Use $dev to implement this plan in staged subagent phases, then verify the whole change."
-
-policy:
-  allow_implicit_invocation: false

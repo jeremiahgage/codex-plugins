@@ -3,7 +3,7 @@
 This repository is a local Codex plugin marketplace. It currently packages one plugin,
 `codex-plugins`, with these skills:
 
-- `$dev`: staged implementation through serial worker agents, followed by verification.
+- `$ultradev`: staged implementation through serial worker agents, followed by verification.
 - `$ultrareview`: parallel multi-lane review of a focus area or current changes.
 
 ## Layout
