@@ -1,0 +1,7 @@
+interface:
+  display_name: "Ultrareview"
+  short_description: "Parallel deep code review"
+  default_prompt: "Use $ultrareview to review the current changes with parallel review agents and return prioritized issues."
+
+policy:
+  allow_implicit_invocation: false
