@@ -40,9 +40,19 @@ Use this skill to implement an existing plan through staged subagent work while 
    - Fix failures locally when small and obvious. For larger failures, spawn a serial repair phase with a narrow scope, then rerun verification.
    - Do not claim completion until the full work is verified or the remaining blocker is explicit and actionable.
 
+6. Simplify the implementation.
+   - Before simplifying, define the exact simplification scope and the behavior, contracts, telemetry, user-facing flows, and acceptance criteria that must stay fixed.
+   - Review the verified diff for unnecessary abstraction, duplicated logic, dead code, awkward control flow, excessive configuration, and names that obscure intent.
+   - Spawn exactly one new simplification subagent with fresh context; do not reuse prior phase context or perform the simplification locally.
+   - Give the simplification subagent a self-contained brief that includes exact files, invariants, relevant repo docs or examples, required verification, and expected report format.
+   - Instruct the simplification subagent to prefer small local simplifications that preserve behavior, acceptance criteria, and existing repo conventions.
+   - Reject changes that trade readability for cleverness, introduce a new architecture, or expand cleanup into unrelated refactoring.
+   - Inspect the simplification subagent's result before finalizing. If no meaningful simplification exists, leave the diff unchanged and report that explicitly.
+   - Rerun affected verification checks after simplification, or clearly state why no checks are needed.
+
 ## Subagent Prompt Shape
 
-Use prompts with this structure:
+Use implementation phase prompts with this structure:
 
 ```text
 You are implementing phase {n} of {total} for a planned development task.
@@ -75,6 +85,46 @@ When done, report:
 - unresolved issues
 ```
 
+Use the required simplification subagent prompt with this structure:
+
+```text
+You are simplifying the completed implementation for a planned development task.
+
+Original plan summary:
+{brief plan}
+
+Completed phase summaries:
+{phase summaries}
+
+Simplification scope:
+{exact files/modules/areas}
+
+Behavior and contracts that must stay fixed:
+{acceptance criteria, external contracts, telemetry, user-facing flows, and other invariants}
+
+Relevant repo context:
+{repo docs, conventions, and nearby examples to follow}
+
+Instructions:
+- Use fresh context only; rely on this brief, not prior phase context.
+- Simplify without changing functionality.
+- Prefer small local edits that remove duplication, dead code, unnecessary indirection, awkward control flow, or unclear names.
+- Do not introduce new architecture, broaden scope, hide simple logic in clever abstractions, or refactor unrelated code.
+- Do not spawn subagents.
+- You are not alone in the codebase; do not revert edits made by others.
+- If no meaningful simplification exists, leave the files unchanged and say so.
+
+Verification:
+{checks to run, or checks already run that must remain valid}
+
+When done, report:
+- changed files, or "none"
+- simplifications made and why they are simpler
+- behavior-preservation checks
+- verification run and results
+- unresolved issues or residual risks
+```
+
 ## Final Response
 
-Report the completed phase sequence, major changes, verification performed, and any residual risks. Keep the final user-facing summary concise and make clear whether the original plan is fully implemented.
+Report the completed phase sequence, major changes, simplification performed, verification performed, and any residual risks. Keep the final user-facing summary concise and make clear whether the original plan is fully implemented.
