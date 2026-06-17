@@ -1,11 +1,13 @@
 ---
 name: ultradev
-description: Use only when the user explicitly invokes `$ultradev` or directly asks for a generic development orchestrator that ingests an implementation plan, chooses serial subagent phases, spawns fresh-context worker subagents one at a time, summarizes each phase's changes, and verifies the completed work end to end.
+description: Use only when the user explicitly invokes `$ultradev` or directly asks for a generic development orchestrator that ingests an implementation plan, chooses serial subagent phases, spawns fresh-context worker subagents one at a time, runs a required simplification subagent, and verifies the completed work end to end.
 ---
 
 # Ultradev
 
 Use this skill to implement an existing plan through staged subagent work while retaining orchestrator ownership of integration and verification.
+
+The simplification subagent is a required phase gate on every successful run. Do not let normal diff review, worker self-review, or final verification substitute for it.
 
 ## Workflow
 
@@ -34,21 +36,21 @@ Use this skill to implement an existing plan through staged subagent work while 
    - Use phase summaries as checkpoints. Do not stage, commit, create branches, or push unless the user explicitly asks.
    - Resolve integration problems locally when small and clearly within the phase intent; otherwise create a narrow follow-up phase.
 
-5. Verify the full work as orchestrator.
-   - After all phases complete, inspect the entire diff and reconcile it with the original plan and global acceptance criteria.
-   - Run the project's relevant tests, builds, linters, type checks, or manual verification discovered from the repo.
-   - Fix failures locally when small and obvious. For larger failures, spawn a serial repair phase with a narrow scope, then rerun verification.
-   - Do not claim completion until the full work is verified or the remaining blocker is explicit and actionable.
-
-6. Simplify the implementation.
+5. Simplify the implementation.
+   - Run this phase after implementation and repair phases, before final verification, for every successful run.
    - Before simplifying, define the exact simplification scope and the behavior, contracts, telemetry, user-facing flows, and acceptance criteria that must stay fixed.
-   - Review the verified diff for unnecessary abstraction, duplicated logic, dead code, awkward control flow, excessive configuration, and names that obscure intent.
+   - Review the candidate diff for unnecessary abstraction, duplicated logic, dead code, awkward control flow, excessive configuration, and names that obscure intent.
    - Spawn exactly one new simplification subagent with fresh context; do not reuse prior phase context or perform the simplification locally.
    - Give the simplification subagent a self-contained brief that includes exact files, invariants, relevant repo docs or examples, required verification, and expected report format.
    - Instruct the simplification subagent to prefer small local simplifications that preserve behavior, acceptance criteria, and existing repo conventions.
    - Reject changes that trade readability for cleverness, introduce a new architecture, or expand cleanup into unrelated refactoring.
    - Inspect the simplification subagent's result before finalizing. If no meaningful simplification exists, leave the diff unchanged and report that explicitly.
-   - Rerun affected verification checks after simplification, or clearly state why no checks are needed.
+
+6. Verify the full work as orchestrator.
+   - After simplification completes, inspect the entire diff and reconcile it with the original plan and global acceptance criteria.
+   - Run the project's relevant tests, builds, linters, type checks, or manual verification discovered from the repo.
+   - Fix failures locally when small and obvious. For larger failures, spawn a serial repair phase with a narrow scope, then rerun the required simplification phase before final verification.
+   - Do not claim completion until the full work is verified or the remaining blocker is explicit and actionable.
 
 ## Subagent Prompt Shape
 
@@ -127,4 +129,4 @@ When done, report:
 
 ## Final Response
 
-Report the completed phase sequence, major changes, simplification performed, verification performed, and any residual risks. Keep the final user-facing summary concise and make clear whether the original plan is fully implemented.
+Report the completed phase sequence, major changes, simplification performed or explicitly "none", verification performed, and any residual risks. Keep the final user-facing summary concise and make clear whether the original plan is fully implemented.

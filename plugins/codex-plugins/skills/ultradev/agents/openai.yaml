@@ -1,7 +1,7 @@
 interface:
   display_name: "Ultradev"
   short_description: "Implement plans with staged agents"
-  default_prompt: "Use $ultradev to implement this plan in staged subagent phases, then verify the whole change."
+  default_prompt: "Use $ultradev to implement this plan in staged subagent phases, run the required simplification subagent, then verify the whole change."
 
 policy:
   allow_implicit_invocation: false
