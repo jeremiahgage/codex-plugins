@@ -1,10 +1,13 @@
 # Codex Plugins
 
-This repository is a local Codex plugin marketplace. It currently packages one plugin,
-`codex-plugins`, with these skills:
+Public Codex plugin marketplace for small workflow skills.
+
+It currently packages one plugin, `codex-plugins`, with these skills:
 
 - `$ultradev`: staged implementation through serial worker agents, followed by verification.
 - `$ultrareview`: parallel multi-lane review of a focus area or current changes.
+
+These skills are experimental and intended for local Codex use.
 
 ## Layout
 
@@ -12,13 +15,42 @@ This repository is a local Codex plugin marketplace. It currently packages one p
 - `plugins/codex-plugins/.codex-plugin/plugin.json`: plugin manifest.
 - `plugins/codex-plugins/skills/`: packaged Codex skills.
 
-## Local Install
+## Remote Install
 
-From any shell, add this repository as a local marketplace and install the plugin:
+Add this repository as a remote marketplace, then install the plugin:
 
 ```bash
-codex plugin marketplace add /Users/gage/Developer/Projects/codex-plugins
+codex plugin marketplace add https://github.com/jeremiahgage/codex-plugins.git
 codex plugin add codex-plugins@codex-plugins
 ```
 
 Start a new Codex thread after installing so the packaged skills are loaded.
+
+## Local Install
+
+Clone this repository, then add the repository root as a local marketplace:
+
+```bash
+git clone https://github.com/jeremiahgage/codex-plugins.git
+cd codex-plugins
+codex plugin marketplace add "$(pwd)"
+codex plugin add codex-plugins@codex-plugins
+```
+
+Start a new Codex thread after installing so the packaged skills are loaded.
+
+## Usage
+
+These skills are meant to be used with subagents, which must be invoked manually. Here are some example prompts:
+
+```text
+Use subagents and $ultradev [PLAN].
+```
+
+```text
+Use subagents and $ultrareview [PLAN].
+```
+
+## License
+
+MIT

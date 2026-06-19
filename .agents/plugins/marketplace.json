@@ -1,7 +1,7 @@
 {
   "name": "codex-plugins",
   "interface": {
-    "displayName": "Gage Codex Plugins"
+    "displayName": "Codex Plugins"
   },
   "plugins": [
     {

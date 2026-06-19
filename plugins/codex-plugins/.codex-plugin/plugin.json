@@ -1,9 +1,9 @@
 {
   "name": "codex-plugins",
   "version": "0.1.3",
-  "description": "Local Codex plugin packaging the ultradev and ultrareview workflow skills.",
+  "description": "Codex plugin packaging the ultradev and ultrareview workflow skills.",
   "author": {
-    "name": "Local developer"
+    "name": "Codex Plugins contributors"
   },
   "skills": "./skills/",
   "keywords": [
@@ -15,8 +15,8 @@
   "interface": {
     "displayName": "Codex Plugins",
     "shortDescription": "Ultradev orchestration and parallel review skills.",
-    "longDescription": "Packages the $ultradev staged implementation workflow and the $ultrareview parallel code review workflow for local Codex use.",
-    "developerName": "Local developer",
+    "longDescription": "Packages the $ultradev staged implementation workflow and the $ultrareview parallel code review workflow for Codex use.",
+    "developerName": "Codex Plugins contributors",
     "category": "Productivity",
     "capabilities": [
       "Write",
