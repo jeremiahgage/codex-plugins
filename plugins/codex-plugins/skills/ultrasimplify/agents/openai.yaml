@@ -1,0 +1,7 @@
+interface:
+  display_name: "Ultrasimplify"
+  short_description: "Simplify code with one focused agent"
+  default_prompt: "Use $ultrasimplify to simplify this code with one fresh-context worker while preserving behavior, then verify the result."
+
+policy:
+  allow_implicit_invocation: false
