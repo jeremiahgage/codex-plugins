@@ -17,9 +17,11 @@ Use this skill to run a parallel, multi-lane code review while retaining orchest
 
 2. Decide the review lanes.
    - Use parallel lanes that match the change's risk and surface area.
-   - Default lanes: correctness and data integrity, architecture and style consistency, performance and scalability, tests and coverage, security and error handling, user experience and accessibility.
+   - Default lanes: correctness and data integrity, architecture and patterns, style consistency, performance and scalability, tests and coverage, security and error handling, user experience and accessibility.
+   - Always include a dedicated architecture and patterns lane. This lane counts toward the selected lane count and gets its own agent.
+   - Keep style consistency as a separate lane when style review is selected.
    - Use 2-3 lanes for small changes, 4-6 lanes for larger or riskier changes.
-   - Merge irrelevant or overlapping lanes. Add a domain-specific lane only when the repo or focus clearly calls for it.
+   - Merge irrelevant or overlapping optional lanes after assigning the required architecture and patterns lane and any selected style lane. Add a domain-specific lane only when the repo or focus clearly calls for it.
    - Partition lanes by concern, not file ownership. Every lane should see the whole changed surface unless the target is explicitly narrower.
    - Define each lane with a narrow review concern and expected evidence.
 
@@ -65,6 +67,10 @@ Changed areas:
 
 Your review lane:
 {lane name and narrow focus}
+
+Required lane coverage:
+- One parallel agent must always own the dedicated architecture and patterns lane.
+- Style consistency, when selected, gets a separate lane from architecture and patterns.
 
 Instructions:
 - Review only; do not edit files.

@@ -9,6 +9,8 @@ Use this skill to implement an existing plan through staged subagent work while 
 
 The simplification subagent is a required phase gate on every successful run. Do not let normal diff review, worker self-review, or final verification substitute for it.
 
+When tradeoffs conflict, prefer correct, maintainable implementation and adequate verification over minimizing runtime, token use, or delegation overhead. Treat simplification as reducing unnecessary code complexity, not as a reason to skip required context, review, or verification.
+
 ## Workflow
 
 1. Ingest the plan.
@@ -76,6 +78,7 @@ Constraints:
 - Do not spawn subagents.
 - Keep changes within this phase unless a small adjacent edit is required for correctness.
 - Follow existing repo conventions.
+- When tradeoffs conflict, prefer correctness, maintainability, and adequate verification over minimizing runtime, token use, or delegation overhead.
 
 Acceptance criteria:
 {criteria}
@@ -111,6 +114,7 @@ Instructions:
 - Use fresh context only; rely on this brief, not prior phase context.
 - Simplify without changing functionality.
 - Prefer small local edits that remove duplication, dead code, unnecessary indirection, awkward control flow, or unclear names.
+- Treat simplification as reducing unnecessary code complexity, not as a reason to skip required context, review, or verification.
 - Do not introduce new architecture, broaden scope, hide simple logic in clever abstractions, or refactor unrelated code.
 - Do not spawn subagents.
 - You are not alone in the codebase; do not revert edits made by others.

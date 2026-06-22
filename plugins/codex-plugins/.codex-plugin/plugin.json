@@ -1,6 +1,6 @@
 {
   "name": "codex-plugins",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Codex plugin packaging the ultradev, ultrareview, and ultrasimplify workflow skills.",
   "author": {
     "name": "Codex Plugins contributors"
