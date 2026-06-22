@@ -6,7 +6,7 @@ It currently packages one plugin, `codex-plugins`, with these skills:
 
 - `$ultradev`: staged implementation through serial worker agents, followed by verification.
 - `$ultrareview`: parallel multi-lane review of a focus area or current changes.
-- `$ultrasimplify`: behavior-preserving simplification through one focused worker agent, followed by verification.
+- `$ultrasimplify`: behavior-preserving simplification through parallel cleanup review agents, approved fixes, and verification.
 
 These skills are experimental and intended for local Codex use.
 

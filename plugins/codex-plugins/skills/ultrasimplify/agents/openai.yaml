@@ -1,7 +1,7 @@
 interface:
   display_name: "Ultrasimplify"
-  short_description: "Simplify code with one focused agent"
-  default_prompt: "Use $ultrasimplify to simplify this code with one fresh-context worker while preserving behavior, then verify the result."
+  short_description: "Simplify code with parallel cleanup agents"
+  default_prompt: "Use $ultrasimplify to review this code with parallel cleanup agents, apply approved behavior-preserving simplifications, then verify the result."
 
 policy:
   allow_implicit_invocation: false
