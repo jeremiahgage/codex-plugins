@@ -4,6 +4,7 @@ Public Codex plugin marketplace for small workflow skills.
 
 It currently packages one plugin, `codex-plugins`, with these skills:
 
+- `$ultrareview-plan`: review and refine an existing implementation plan with focused subagents.
 - `$ultradev`: staged implementation through serial worker agents, followed by verification.
 - `$ultrareview`: parallel multi-lane review of a focus area or current changes.
 - `$ultrasimplify`: behavior-preserving simplification through parallel cleanup review agents, approved fixes, and verification.
@@ -43,6 +44,10 @@ Start a new Codex thread after installing so the packaged skills are loaded.
 ## Usage
 
 These skills are meant to be used with subagents, which must be invoked manually. Here are some example prompts:
+
+```text
+Use subagents and $ultrareview-plan [PLAN].
+```
 
 ```text
 Use subagents and $ultradev [PLAN].

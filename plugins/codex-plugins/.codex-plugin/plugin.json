@@ -1,7 +1,7 @@
 {
   "name": "codex-plugins",
-  "version": "0.1.6",
-  "description": "Codex plugin packaging the ultradev, ultrareview, and ultrasimplify workflow skills.",
+  "version": "0.1.7",
+  "description": "Codex plugin packaging the ultrareview-plan, ultradev, ultrareview, and ultrasimplify workflow skills.",
   "author": {
     "name": "Codex Plugins contributors"
   },
@@ -10,14 +10,15 @@
     "codex",
     "skills",
     "development",
+    "planning",
     "review",
     "simplification",
     "refactor"
   ],
   "interface": {
     "displayName": "Codex Plugins",
-    "shortDescription": "Ultradev, review, and simplification skills.",
-    "longDescription": "Packages the $ultradev staged implementation workflow, the $ultrareview parallel code review workflow, and the $ultrasimplify behavior-preserving simplification workflow for Codex use.",
+    "shortDescription": "Plan review, ultradev, review, and simplification skills.",
+    "longDescription": "Packages the $ultrareview-plan implementation-plan review workflow, the $ultradev staged implementation workflow, the $ultrareview parallel code review workflow, and the $ultrasimplify behavior-preserving simplification workflow for Codex use.",
     "developerName": "Codex Plugins contributors",
     "category": "Productivity",
     "capabilities": [
@@ -26,6 +27,7 @@
       "Automation"
     ],
     "defaultPrompt": [
+      "Use $ultrareview-plan to review this implementation plan with focused subagents.",
       "Use $ultradev to implement this plan.",
       "Use $ultrareview to review current changes.",
       "Use $ultrasimplify to simplify current changes."
