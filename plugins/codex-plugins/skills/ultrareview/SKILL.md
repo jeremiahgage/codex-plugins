@@ -31,7 +31,7 @@ Use this skill to run a parallel, multi-lane code review while retaining orchest
    - Use fresh context for every agent; do not fork full orchestrator context unless the user explicitly requests it.
    - Give each agent the shared review target summary, the full changed surface, and its lane-specific focus.
    - Tell agents not to edit files, not to spawn more agents, and not to duplicate other lanes except where a finding is directly relevant.
-   - Require each agent to report actionable findings with severity, file and line evidence when possible, rationale, and a concise lane summary.
+   - Require each agent to report actionable findings as a numbered list with severity, file and line evidence when possible, rationale, and a concise lane summary. Do not accept bullet-only finding lists.
 
 4. Collect and reconcile results.
    - Wait for all review agents to finish before producing the final review.
@@ -40,7 +40,7 @@ Use this skill to run a parallel, multi-lane code review while retaining orchest
    - Verify high-severity claims against the code or diff before presenting them when feasible.
 
 5. Compile the final issue list.
-   - Lead with findings, ordered by severity and confidence.
+   - Lead with a numbered findings list, ordered by severity and confidence. Use numbered entries such as `1.`, `2.`, `3.` for issues found, not bullets.
    - For each issue include file and line reference when available, impact, and the minimal fix direction.
    - Include open questions only when they affect review confidence or implementation safety.
    - If no issues are found, say so clearly and note residual risk or unverified areas.
@@ -82,7 +82,7 @@ Instructions:
 - Provide file and line evidence when possible.
 
 When done, report:
-- findings with severity, evidence, impact, and fix direction
+- numbered findings with severity, evidence, impact, and fix direction
 - checks or searches performed
 - lane coverage summary
 - residual uncertainty
@@ -92,7 +92,7 @@ When done, report:
 
 Use a review-first format:
 
-1. Findings ordered by severity.
+1. Numbered findings ordered by severity. Use numbered entries for issues found, not bullets.
 2. Open questions or assumptions.
 3. Agent coverage summary.
 4. Residual risk or test gaps.
