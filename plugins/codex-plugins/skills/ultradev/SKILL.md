@@ -1,13 +1,13 @@
 ---
 name: ultradev
-description: Use only when the user explicitly invokes `$ultradev` or directly asks for a generic development orchestrator that ingests an implementation plan, chooses serial subagent phases, spawns fresh-context worker subagents one at a time, runs a required simplification subagent, and verifies the completed work end to end.
+description: Use only when the user explicitly invokes `$ultradev` or directly asks for a generic development orchestrator that ingests an implementation plan, chooses serial subagent phases, spawns fresh-context worker subagents one at a time, runs a required `$ultrasimplify` simplification phase, and verifies the completed work end to end.
 ---
 
 # Ultradev
 
 Use this skill to implement an existing plan through staged subagent work while retaining orchestrator ownership of integration and verification.
 
-The simplification subagent is a required phase gate on every successful run. Do not let normal diff review, worker self-review, or final verification substitute for it.
+The `$ultrasimplify` phase is a required phase gate on every successful run. Do not let normal diff review, worker self-review, local cleanup, or final verification substitute for it.
 
 When tradeoffs conflict, prefer correct, maintainable implementation and adequate verification over minimizing runtime, token use, or delegation overhead. Treat simplification as reducing unnecessary code complexity, not as a reason to skip required context, review, or verification.
 
@@ -38,20 +38,22 @@ When tradeoffs conflict, prefer correct, maintainable implementation and adequat
    - Use phase summaries as checkpoints. Do not stage, commit, create branches, or push unless the user explicitly asks.
    - Resolve integration problems locally when small and clearly within the phase intent; otherwise create a narrow follow-up phase.
 
-5. Simplify the implementation.
+5. Run the required `$ultrasimplify` phase.
    - Run this phase after implementation and repair phases, before final verification, for every successful run.
    - Before simplifying, define the exact simplification scope and the behavior, contracts, telemetry, user-facing flows, and acceptance criteria that must stay fixed.
    - Review the candidate diff for unnecessary abstraction, duplicated logic, dead code, awkward control flow, excessive configuration, and names that obscure intent.
-   - Spawn exactly one new simplification subagent with fresh context; do not reuse prior phase context or perform the simplification locally.
-   - Give the simplification subagent a self-contained brief that includes exact files, invariants, relevant repo docs or examples, required verification, and expected report format.
-   - Instruct the simplification subagent to prefer small local simplifications that preserve behavior, acceptance criteria, and existing repo conventions.
-   - Reject changes that trade readability for cleverness, introduce a new architecture, or expand cleanup into unrelated refactoring.
-   - Inspect the simplification subagent's result before finalizing. If no meaningful simplification exists, leave the diff unchanged and report that explicitly.
+   - Invoke `$ultrasimplify` explicitly from the parent ultradev orchestrator. Do not spawn a generic simplification subagent and ask that child to invoke `$ultrasimplify`.
+   - Load and follow `$ultrasimplify`'s own skill instructions for this phase.
+   - Give `$ultrasimplify` a self-contained brief with the original plan summary, completed phase summaries, exact files or modules in scope, invariants, relevant repo docs or examples, required verification, and expected report format.
+   - Let `$ultrasimplify` run its normal cleanup review, approved simplification implementation, and behavior-preservation verification workflow.
+   - Reject simplification results that trade readability for cleverness, introduce a new architecture, or expand cleanup into unrelated refactoring.
+   - Inspect the `$ultrasimplify` result before finalizing. If no meaningful simplification exists, leave the diff unchanged and report that explicitly.
+   - If `$ultrasimplify` is unavailable, stop with an explicit blocker instead of silently substituting local cleanup.
 
 6. Verify the full work as orchestrator.
    - After simplification completes, inspect the entire diff and reconcile it with the original plan and global acceptance criteria.
    - Run the project's relevant tests, builds, linters, type checks, or manual verification discovered from the repo.
-   - Fix failures locally when small and obvious. For larger failures, spawn a serial repair phase with a narrow scope, then rerun the required simplification phase before final verification.
+   - Fix failures locally when small and obvious. For larger failures, spawn a serial repair phase with a narrow scope, then rerun the required `$ultrasimplify` phase before final verification.
    - Do not claim completion until the full work is verified or the remaining blocker is explicit and actionable.
 
 ## Subagent Prompt Shape
@@ -90,10 +92,10 @@ When done, report:
 - unresolved issues
 ```
 
-Use the required simplification subagent prompt with this structure:
+Use the required `$ultrasimplify` phase brief with this structure:
 
 ```text
-You are simplifying the completed implementation for a planned development task.
+Use $ultrasimplify to simplify the completed implementation for a planned development task.
 
 Original plan summary:
 {brief plan}
@@ -101,7 +103,7 @@ Original plan summary:
 Completed phase summaries:
 {phase summaries}
 
-Simplification scope:
+Simplification target:
 {exact files/modules/areas}
 
 Behavior and contracts that must stay fixed:
@@ -111,12 +113,11 @@ Relevant repo context:
 {repo docs, conventions, and nearby examples to follow}
 
 Instructions:
-- Use fresh context only; rely on this brief, not prior phase context.
-- Simplify without changing functionality.
+- Run the normal Ultrasimplify workflow for this target.
+- Simplify without changing functionality, behavior, contracts, telemetry, user-facing flows, or acceptance criteria.
 - Prefer small local edits that remove duplication, dead code, unnecessary indirection, awkward control flow, or unclear names.
 - Treat simplification as reducing unnecessary code complexity, not as a reason to skip required context, review, or verification.
 - Do not introduce new architecture, broaden scope, hide simple logic in clever abstractions, or refactor unrelated code.
-- Do not spawn subagents.
 - You are not alone in the codebase; do not revert edits made by others.
 - If no meaningful simplification exists, leave the files unchanged and say so.
 
