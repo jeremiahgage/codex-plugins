@@ -26,16 +26,16 @@ When tradeoffs conflict, prefer correct, maintainable implementation and adequat
 3. Spawn subagents serially.
    - Spawn exactly one worker subagent at a time.
    - Use fresh context for every worker; do not fork full orchestrator context unless the user explicitly requests it.
-   - Give each worker only the original plan summary, current repo facts needed for the phase, previous phase summaries, its write scope, constraints, and acceptance criteria.
+   - Give each worker only the original plan summary, current repo facts needed for the phase, prior phase handoffs, its write scope, constraints, and acceptance criteria.
    - Tell each worker it is not alone in the codebase, must not revert others' work, must not spawn additional agents, and must adapt to existing or prior-phase changes.
-   - Require each worker's final response to list changed files, behavior changes, checks run, and unresolved issues.
+   - Require each worker's final response to emit the Phase Handoff Schema.
 
 4. Integrate after each phase.
    - Wait for the current worker before starting the next phase.
    - Review the worker's reported changes and inspect the relevant diff or files.
    - If the worker misses acceptance criteria, reports a blocker, or leaves the phase incomplete, do not start the next phase; inspect the failure, re-scope and respawn that phase, fix locally if small, or halt with an explicit blocker.
-   - Record a concise change summary to pass forward.
-   - Use phase summaries as checkpoints. Do not stage, commit, create branches, or push unless the user explicitly asks.
+   - Forward the worker's Phase Handoff record unchanged to the next phase; if you make local integration edits, amend the record to reflect them.
+   - Use phase handoffs as checkpoints. Do not stage, commit, create branches, or push unless the user explicitly asks.
    - Resolve integration problems locally when small and clearly within the phase intent; otherwise create a narrow follow-up phase.
 
 5. Run the required `$ultrasimplify` phase.
@@ -44,7 +44,7 @@ When tradeoffs conflict, prefer correct, maintainable implementation and adequat
    - Review the candidate diff for unnecessary abstraction, duplicated logic, dead code, awkward control flow, excessive configuration, and names that obscure intent.
    - Invoke `$ultrasimplify` explicitly from the parent ultradev orchestrator. Do not spawn a generic simplification subagent and ask that child to invoke `$ultrasimplify`.
    - Load and follow `$ultrasimplify`'s own skill instructions for this phase.
-   - Give `$ultrasimplify` a self-contained brief with the original plan summary, completed phase summaries, exact files or modules in scope, invariants, relevant repo docs or examples, required verification, and expected report format.
+   - Give `$ultrasimplify` a self-contained brief with the original plan summary, completed phase handoffs, exact files or modules in scope, invariants, relevant repo docs or examples, required verification, and expected report format.
    - Let `$ultrasimplify` run its normal cleanup review, approved simplification implementation, and behavior-preservation verification workflow.
    - Reject simplification results that trade readability for cleverness, introduce a new architecture, or expand cleanup into unrelated refactoring.
    - Inspect the `$ultrasimplify` result before finalizing. If no meaningful simplification exists, leave the diff unchanged and report that explicitly.
@@ -56,6 +56,21 @@ When tradeoffs conflict, prefer correct, maintainable implementation and adequat
    - Fix failures locally when small and obvious. For larger failures, spawn a serial repair phase with a narrow scope, then rerun the required `$ultrasimplify` phase before final verification.
    - Do not claim completion until the full work is verified or the remaining blocker is explicit and actionable.
 
+## Phase Handoff Schema
+
+Every worker emits this record as its final response, and the orchestrator forwards it unchanged to later phases. The three dependency-carrying fields (`public_interfaces_added_or_changed`, `invariants_established`, `deferred_followups`) are what make serial handoff reliable; workers must populate them even when the change feels self-contained.
+
+```text
+Phase handoff:
+- changed_files: paths touched this phase
+- public_interfaces_added_or_changed: signatures, contracts, or exports later phases may depend on, or "none"
+- invariants_established: guarantees later phases must preserve, or "none"
+- behavior_changes: user- or system-visible changes, or "none"
+- checks_run: checks or tests run this phase and their results
+- deferred_followups: known work intentionally left for a later phase, or "none"
+- unresolved_issues: blockers or residual risks, or "none"
+```
+
 ## Subagent Prompt Shape
 
 Use implementation phase prompts with this structure:
@@ -66,8 +81,8 @@ You are implementing phase {n} of {total} for a planned development task.
 Original plan summary:
 {brief plan}
 
-Prior phase summaries:
-{phase summaries or "None"}
+Prior phase handoffs:
+{phase handoff records or "None"}
 
 Your phase objective:
 {objective}
@@ -85,11 +100,14 @@ Constraints:
 Acceptance criteria:
 {criteria}
 
-When done, report:
-- changed files
-- behavior changes
-- checks run and results
-- unresolved issues
+When done, emit the Phase Handoff record:
+- changed_files: paths touched this phase
+- public_interfaces_added_or_changed: signatures, contracts, or exports later phases may depend on, or "none"
+- invariants_established: guarantees later phases must preserve, or "none"
+- behavior_changes: user- or system-visible changes, or "none"
+- checks_run: checks or tests run this phase and their results
+- deferred_followups: known work intentionally left for a later phase, or "none"
+- unresolved_issues: blockers or residual risks, or "none"
 ```
 
 Use the required `$ultrasimplify` phase brief with this structure:
@@ -100,8 +118,8 @@ Use $ultrasimplify to simplify the completed implementation for a planned develo
 Original plan summary:
 {brief plan}
 
-Completed phase summaries:
-{phase summaries}
+Completed phase handoffs:
+{phase handoff records}
 
 Simplification target:
 {exact files/modules/areas}
