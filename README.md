@@ -7,6 +7,7 @@ It currently packages one plugin, `codex-plugins`, with these skills:
 - `$ultrareview-plan`: review and refine an existing implementation plan with focused subagents.
 - `$ultradev`: staged implementation through serial worker agents, followed by verification.
 - `$ultrareview`: parallel multi-lane review of a focus area or current changes.
+- `$ultraadversarialreview`: Claude-backed adversarial review with local validation and reprioritization of candidate findings.
 - `$ultrasimplify`: behavior-preserving simplification through parallel cleanup review agents, approved fixes, and verification.
 
 These skills are experimental and intended for local Codex use.
@@ -55,6 +56,10 @@ Use subagents and $ultradev [PLAN].
 
 ```text
 Use subagents and $ultrareview [PLAN].
+```
+
+```text
+Use $ultraadversarialreview [FOCUS].
 ```
 
 ```text

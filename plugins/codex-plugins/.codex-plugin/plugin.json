@@ -1,7 +1,7 @@
 {
   "name": "codex-plugins",
-  "version": "0.1.10",
-  "description": "Codex plugin packaging the ultrareview-plan, ultradev, ultrareview, and ultrasimplify workflow skills.",
+  "version": "0.1.11",
+  "description": "Codex plugin packaging the ultrareview-plan, ultradev, ultrareview, ultraadversarialreview, and ultrasimplify workflow skills.",
   "author": {
     "name": "Codex Plugins contributors"
   },
@@ -12,13 +12,15 @@
     "development",
     "planning",
     "review",
+    "adversarial-review",
+    "claude",
     "simplification",
     "refactor"
   ],
   "interface": {
     "displayName": "Codex Plugins",
-    "shortDescription": "Plan review, ultradev, review, and simplification skills.",
-    "longDescription": "Packages the $ultrareview-plan implementation-plan review workflow, the $ultradev staged implementation workflow, the $ultrareview parallel code review workflow, and the $ultrasimplify behavior-preserving simplification workflow for Codex use.",
+    "shortDescription": "Plan review, development, review, adversarial review, and simplification skills.",
+    "longDescription": "Packages the $ultrareview-plan implementation-plan review workflow, the $ultradev staged implementation workflow, the $ultrareview parallel code review workflow, the $ultraadversarialreview Claude-backed adversarial review workflow, and the $ultrasimplify behavior-preserving simplification workflow for Codex use.",
     "developerName": "Codex Plugins contributors",
     "category": "Productivity",
     "capabilities": ["Write", "Review", "Automation"],
@@ -26,6 +28,7 @@
       "Use $ultrareview-plan to review this implementation plan with focused subagents.",
       "Use $ultradev to implement this plan.",
       "Use $ultrareview to review current changes.",
+      "Use $ultraadversarialreview to run claude -p against current changes and validate the candidate findings.",
       "Use $ultrasimplify to simplify current changes."
     ],
     "brandColor": "#2563EB"

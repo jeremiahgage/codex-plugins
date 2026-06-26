@@ -1,0 +1,7 @@
+interface:
+  display_name: "Ultra Adversarial Review"
+  short_description: "Claude-backed adversarial review"
+  default_prompt: "Use $ultraadversarialreview to run claude -p against current changes, validate the candidate findings locally, and return prioritized confirmed issues."
+
+policy:
+  allow_implicit_invocation: false
