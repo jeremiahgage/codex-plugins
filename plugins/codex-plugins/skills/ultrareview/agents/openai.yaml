@@ -1,5 +1,5 @@
 interface:
-  display_name: "Ultrareview"
+  display_name: "Ultra Review"
   short_description: "Parallel deep code review"
   default_prompt: "Use $ultrareview to review the current changes with parallel review agents and return numbered prioritized issues."
 

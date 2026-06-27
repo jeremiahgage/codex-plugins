@@ -1,5 +1,5 @@
 interface:
-  display_name: "Ultrareview Plan"
+  display_name: "Ultra Review Plan"
   short_description: "Review and refine implementation plans"
   default_prompt: "Use $ultrareview-plan to review this implementation plan with focused subagents and return one revised agent-ready plan."
 
